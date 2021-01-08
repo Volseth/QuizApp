@@ -91,7 +91,7 @@ def save_picture(form_picture, path):
     return picture_filename
 
 
-def getStats(username):
+def getStats():
     stats = Statistic.query.filter(Statistic.createdBy == current_user.id).all()
     quizes_solved = 0
     total_score = 0
@@ -108,8 +108,8 @@ def getStats(username):
     if total_answers == 0:
         total_answers = 1
     return quizes_solved, total_score, \
-           total_good, str(round(total_good / total_answers, 2) * 100) + "%", \
-           datetime.timedelta(seconds=total_time), total_wrong
+        total_good, str(round(total_good / total_answers, 2) * 100) + "%", \
+        datetime.timedelta(seconds=total_time), total_wrong
 
 
 # User profile
@@ -128,7 +128,7 @@ def profile(username):
         form_update.email.data = current_user.email
 
     # Get statistics
-    quizes, score, good, precentage, time, wrong = getStats(username)
+    quizes, score, good, percentage, time, wrong = getStats()
 
     # Update user profile
     if form_update.submit.data and form_update.validate_on_submit():
@@ -163,7 +163,7 @@ def profile(username):
         return redirect(url_for('profile', username=username))
     image_file = url_for('static', filename='images/profile_pics/' + current_user.image_file)
     return render_template('profile.html', image_file=image_file, form=form_update, all_categories=all_categories,
-                           names=names, quizes=quizes, score=score, good=good, precentage=precentage, time=time,
+                           names=names, quizes=quizes, score=score, good=good, precentage=percentage, time=time,
                            wrong=wrong)
 
 
@@ -250,7 +250,8 @@ def edit_category(username, category):
                  Category.categoryName == form_update.category_name.data)).first()
         # If category exists check name change in form
         if category_name and (
-                form_update.category_name.data != category_query.categoryName or form_update.parent_category.data != category_query.parentCategory):
+                form_update.category_name.data != category_query.categoryName
+                or form_update.parent_category.data != category_query.parentCategory):
             if category_name.categoryName == form_update.category_name.data:
                 flash('Taka kategoria już istnieje! Wprowadź inna nazwę', 'danger')
                 return redirect(
@@ -297,8 +298,9 @@ def questions(username, category):
     # Get all questions for selected category, created by current user
     category = Category.query.filter(Category.categoryName == category,
                                      or_(Category.createdBy == current_user.id, Category.createdBy == None)).first()
-    questions = Question.query.filter(Question.categoryId == category.categoryId, Question.createdBy == current_user.id).all()
-    return render_template('questions.html', questions=questions, username=username, category=category)
+    category_questions = Question.query.filter(Question.categoryId == category.categoryId,
+                                               Question.createdBy == current_user.id).all()
+    return render_template('questions.html', questions=category_questions, username=username, category=category)
 
 
 # Add new question in selected category
@@ -395,17 +397,18 @@ def quiz_categories(username):
 def learn(username, category, time):
     # Get all questions and answers for selected category, created by current user
     selected_category = Category.query.filter(Category.categoryName == category,
-                                     or_(Category.createdBy == current_user.id, Category.createdBy == None)).first()
+                                              or_(Category.createdBy == current_user.id,
+                                                  Category.createdBy == None)).first()
 
-    questions = Question.query.filter(
+    category_questions = Question.query.filter(
         and_(Question.categoryId == selected_category.categoryId, Question.createdBy == current_user.id)).all()
 
     answers = []
     # Make questions randomly shuffled
-    random.shuffle(questions)
+    random.shuffle(category_questions)
     # Json format for questions
     questions_json = []
-    for question in questions:
+    for question in category_questions:
         answers.append(question.answers.answerText)
         questions_json.append(json.dumps(question.serialize()))
 
@@ -448,6 +451,7 @@ def learn(username, category, time):
         current_user.statistics.append(user_stats)
         db.session.commit()
     if request.method == 'GET':
-        redirect(url_for('learn', username=username, category=category, questions_json=questions_with_options, time=time))
+        redirect(
+            url_for('learn', username=username, category=category, questions_json=questions_with_options, time=time))
     return render_template('learn.html', username=username, category=category, questions_json=questions_with_options,
                            time=time)
