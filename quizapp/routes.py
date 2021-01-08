@@ -297,7 +297,7 @@ def questions(username, category):
     # Get all questions for selected category, created by current user
     category = Category.query.filter(Category.categoryName == category,
                                      or_(Category.createdBy == current_user.id, Category.createdBy == None)).first()
-    questions = category.category_questions
+    questions = Question.query.filter(Question.categoryId == category.categoryId, Question.createdBy == current_user.id).all()
     return render_template('questions.html', questions=questions, username=username, category=category)
 
 
@@ -436,7 +436,7 @@ def learn(username, category, time):
     if request.method == 'POST':
         stats = request.get_json()
         category = Category.query.filter(Category.categoryName == category,
-                                         Category.createdBy == current_user.id).first()
+                                         or_(Category.createdBy == current_user.id, Category.createdBy == None)).first()
         user_stats = Statistic(
             categoryId=category.categoryId,
             goodAnswers=stats['good'],
