@@ -12,7 +12,7 @@
     <hr>
     {% for question in questions%}
     <div class="d-flex justify-content-center">
-        <div class="d-flex center">
+        <div class="d-flex center question">
             <div class="col-10">
                 <a href="{{ url_for('edit_question', username=current_user.username, category=category, questionId=question.questionId) }}">
                     <h3 class="my-caption-text">Pytanie: {{question.questionText}}</h3>

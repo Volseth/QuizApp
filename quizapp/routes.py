@@ -116,7 +116,7 @@ def getStats(username):
 @app.route('/<username>/profile/', methods=['GET', 'POST'])
 @login_required
 def profile(username):
-    formUpdate = UpdateAccountForm()
+    form_update = UpdateAccountForm()
     # Get the actual data for forms
     all_categories = Category.query.filter_by(parentCategory=None).order_by(Category.categoryName).all()
     interest_categories = current_user.interests
@@ -124,19 +124,19 @@ def profile(username):
     for category in interest_categories:
         names.append(category.categoryName)
     if request.method == 'GET':
-        formUpdate.name.data = current_user.name
-        formUpdate.email.data = current_user.email
+        form_update.name.data = current_user.name
+        form_update.email.data = current_user.email
 
     # Get statistics
     quizes, score, good, precentage, time, wrong = getStats(username)
 
     # Update user profile
-    if formUpdate.submit.data and formUpdate.validate_on_submit():
-        if formUpdate.picture.data:
-            picture_file = save_picture(formUpdate.picture.data, 'static/images/profile_pics')
+    if form_update.submit.data and form_update.validate_on_submit():
+        if form_update.picture.data:
+            picture_file = save_picture(form_update.picture.data, 'static/images/profile_pics')
             current_user.image_file = picture_file
-        current_user.name = formUpdate.name.data
-        current_user.email = formUpdate.email.data
+        current_user.name = form_update.name.data
+        current_user.email = form_update.email.data
         db.session.commit()
         flash('Twój profil został uaktualniony!', 'success')
         return redirect(url_for('profile', username=username))
@@ -162,7 +162,7 @@ def profile(username):
         flash('Twoje zainteresowania zostały uaktualnione!', 'success')
         return redirect(url_for('profile', username=username))
     image_file = url_for('static', filename='images/profile_pics/' + current_user.image_file)
-    return render_template('profile.html', image_file=image_file, form=formUpdate, all_categories=all_categories,
+    return render_template('profile.html', image_file=image_file, form=form_update, all_categories=all_categories,
                            names=names, quizes=quizes, score=score, good=good, precentage=precentage, time=time,
                            wrong=wrong)
 
@@ -202,23 +202,23 @@ def categories(username):
 @login_required
 def add_category(username):
     # Form object, dropdown for menu choices
-    formUpdate = CategoryForm()
+    form_update = CategoryForm()
     choices = Category.query.filter(Category.parentCategory.is_(None)).order_by(Category.categoryName).all()
-    formUpdate.parent_category.choices = choices
-    if formUpdate.submit.data and formUpdate.validate_on_submit():
+    form_update.parent_category.choices = choices
+    if form_update.submit.data and form_update.validate_on_submit():
         # Category name validation:
         category_name = Category.query.filter(
             and_(or_(Category.createdBy.is_(None), Category.createdBy == current_user.id),
-                 Category.categoryName == formUpdate.category_name.data)).first()
+                 Category.categoryName == form_update.category_name.data)).first()
         if category_name:
             flash('Taka kategoria już istnieje! Wprowadź inna nazwę', 'danger')
             return redirect(
-                url_for('add_category', username=username, form=formUpdate))
+                url_for('add_category', username=username, form=form_update))
         else:
             new_category = Category(
-                categoryName=formUpdate.category_name.data,
-                image_file=save_picture(formUpdate.picture.data, 'static/images/category_pics'),
-                parentCategory=formUpdate.parent_category.data,
+                categoryName=form_update.category_name.data,
+                image_file=save_picture(form_update.picture.data, 'static/images/category_pics'),
+                parentCategory=form_update.parent_category.data,
                 createdBy=current_user.id
             )
             db.session.add(new_category)
@@ -226,39 +226,39 @@ def add_category(username):
             flash("Kategoria utworzona pomyślnie!", 'success')
             # Redirect to all categories page
             return redirect(url_for('categories', username=username))
-    return render_template('add_category.html', username=username, form=formUpdate)
+    return render_template('add_category.html', username=username, form=form_update)
 
 
 @app.route('/<username>/categories/<category>/edit_category', methods=['GET', 'POST'])
 @login_required
 def edit_category(username, category):
     # Form data, edited category selection, dropdown from menu choices, category form information
-    formUpdate = CategoryForm()
+    form_update = CategoryForm()
     category_query = Category.query.filter(
         and_(Category.categoryName == category, Category.createdBy == current_user.id)).first()
     choices = Category.query.filter(Category.parentCategory.is_(None)).order_by(Category.categoryName).all()
-    formUpdate.parent_category.choices = choices
+    form_update.parent_category.choices = choices
     if request.method == 'GET':
-        formUpdate.category_name.data = category_query.categoryName
-        formUpdate.parent_category.data = category_query.parentCategory
+        form_update.category_name.data = category_query.categoryName
+        form_update.parent_category.data = category_query.parentCategory
 
     # Update category info
-    if formUpdate.submit.data and formUpdate.validate_on_submit():
+    if form_update.submit.data and form_update.validate_on_submit():
         # Category name validation:
         category_name = Category.query.filter(
             and_(or_(Category.createdBy.is_(None), Category.createdBy == current_user.id),
-                 Category.categoryName == formUpdate.category_name.data)).first()
+                 Category.categoryName == form_update.category_name.data)).first()
         # If category exists check name change in form
         if category_name and (
-                formUpdate.category_name.data != category_query.categoryName or formUpdate.parent_category.data != category_query.parentCategory):
-            if category_name.categoryName == formUpdate.category_name.data:
+                form_update.category_name.data != category_query.categoryName or form_update.parent_category.data != category_query.parentCategory):
+            if category_name.categoryName == form_update.category_name.data:
                 flash('Taka kategoria już istnieje! Wprowadź inna nazwę', 'danger')
                 return redirect(
-                    url_for('edit_category', username=username, category=category_query.categoryName, form=formUpdate))
+                    url_for('edit_category', username=username, category=category_query.categoryName, form=form_update))
         else:
             # Update category image
-            if formUpdate.picture.data:
-                picture_file = save_picture(formUpdate.picture.data, 'static/images/category_pics')
+            if form_update.picture.data:
+                picture_file = save_picture(form_update.picture.data, 'static/images/category_pics')
                 category_query.image_file = picture_file
 
             # Update questions associated with given category
@@ -269,14 +269,14 @@ def edit_category(username, category):
                 db.session.commit()
 
             # Update category information
-            category_query.categoryName = formUpdate.category_name.data
-            category_query.parentCategory = formUpdate.parent_category.data
+            category_query.categoryName = form_update.category_name.data
+            category_query.parentCategory = form_update.parent_category.data
             db.session.commit()
             flash('Kategoria została uaktualniona!', 'success')
             return redirect(
                 url_for('categories', username=username))
     return render_template('edit_category.html', username=username, category=category_query.categoryName,
-                           form=formUpdate)
+                           form=form_update)
 
 
 # Show categories for questions
@@ -436,9 +436,9 @@ def learn(username, category, time):
             categoryId=category.categoryId,
             goodAnswers=stats['good'],
             wrongAnswers=stats['wrong'],
-            score=stats['total_score'],
+            score=stats['totalScore'],
             date=datetime.datetime.utcnow(),
-            timeInSeconds=stats['total_time']
+            timeInSeconds=stats['totalTime']
         )
         current_user.statistics.append(user_stats)
         db.session.commit()

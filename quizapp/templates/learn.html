@@ -81,11 +81,8 @@
         return vars
     }
 
-    let questions = convertToJson({
-    {
-        questions_json | tojson
-    }
-    })
+    let questions = convertToJson({{questions_json | tojson}})
+
     console.log(questions)
 </script>
 

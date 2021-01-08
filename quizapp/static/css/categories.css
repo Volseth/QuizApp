@@ -22,11 +22,24 @@ Category container styling
 */
 .mini-box {
     border: 3px solid #4b2a99;
+    border-radius: 10px;
     margin:10px;
     padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+                0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .mini-box:hover{
     background: #ab90f1;
     transition: all 0.5s ease;
+}
+
+.btn {
+    color: #ffffff;
+	box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+	text-align: center;
+	border:none;
+	border-radius: 100px !important;
+	padding: 10px 20px;
+	margin-top: 15px;
 }
 

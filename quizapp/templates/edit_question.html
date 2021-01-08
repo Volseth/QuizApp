@@ -1,7 +1,10 @@
 {% extends "layout.html" %}
 {% from "includes/formhelpers.html" import render_field %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/questions.css')}}">
+{% endblock head %}
 {% block content %}
-<div class="center">
+<div class="center edit">
     <h4>Edycja pytania</h4>
     <hr>
     <div class="col-6">
@@ -11,8 +14,8 @@
             {{render_field(form.answer_text, class="form-control")}}
             {{render_field(form.submit, class="btn btn-primary", value="Zaktualizuj pytanie")}}
             {{ form.csrf_token }}
+            <a class="btn btn-primary" onclick="goBack()">Powrót</a>
         </form>
-        <a class="btn btn-primary" onclick="goBack()">Powrót</a>
     </div>
 </div>
 

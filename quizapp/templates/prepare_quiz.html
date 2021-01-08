@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% from "includes/formhelpers.html" import render_field %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/questions.css') }}">
+{% endblock head %}
 {% block content %}
 <div class="container-fluid">
     <div class="center">

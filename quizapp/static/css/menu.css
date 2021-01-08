@@ -5,6 +5,7 @@ MENU ITEMS
 	margin: 0 auto;
 	display: block;
 	width: 50%;
+
 }
 .img-blurred-edge{
 	box-shadow: 10px 20px 10px rgba(233, 221, 246, 0.5);
@@ -22,7 +23,7 @@ MENU ITEMS
 MENU BUTTONS
 */
 .menubtn{
-	color: #fff;
+	color: #ffffff;
 	box-shadow: 0 5px 10px rgba(0,0,0,0.3);
 	text-align: center;
 	border:none;

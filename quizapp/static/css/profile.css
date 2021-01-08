@@ -46,6 +46,7 @@ h5 {
     background: #7255c3;
     color: white;
     border: 3px solid #4b2a99;
+    border-radius: 10px;
     width:70%;
     margin: auto;
 }
@@ -58,6 +59,7 @@ h5 {
 
 .interests {
     border: 3px solid #4b2a99;
+    border-radius: 10px;
     background: #b8b8ff;
     padding: 5px;
 }
@@ -75,5 +77,15 @@ li {
     font-size: 35px;
     font-weight: bold;
     color: black;
+}
+
+.btn {
+    color: #ffffff;
+	box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+	text-align: center;
+	border:none;
+	border-radius: 100px !important;
+	padding: 10px 20px;
+	margin-top: 15px;
 }
 
