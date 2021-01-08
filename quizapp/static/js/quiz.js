@@ -177,7 +177,7 @@ function optionSelected(answer){
         answer.insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to correct selected option
 
     }else{
-        wrong += 1
+        wrong += 1;
         combo =  0;
         if(combo >= maxCombo) {
             maxCombo = combo;

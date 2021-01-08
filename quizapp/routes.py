@@ -448,7 +448,6 @@ def learn(username, category, time):
         current_user.statistics.append(user_stats)
         db.session.commit()
     if request.method == 'GET':
-        redirect(
-            url_for('learn', username=username, category=category, questions_json=questions_with_options, time=time))
+        redirect(url_for('learn', username=username, category=category, questions_json=questions_with_options, time=time))
     return render_template('learn.html', username=username, category=category, questions_json=questions_with_options,
                            time=time)
