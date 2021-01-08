@@ -1,0 +1,32 @@
+/*
+Text image in categories
+*/
+.my-caption-text {
+    text-align: center;
+}
+
+/*
+Image sizing
+*/
+.category-image {
+    text-align: center;
+    display: block;
+}
+img {
+    width:150px;
+    height:150px;
+}
+
+/*
+Category container styling
+*/
+.mini-box {
+    border: 3px solid #4b2a99;
+    margin:10px;
+    padding: 10px;
+}
+.mini-box:hover{
+    background: #ab90f1;
+    transition: all 0.5s ease;
+}
+

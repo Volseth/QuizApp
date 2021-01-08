@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/questions.css')}}">
+{% endblock head %}
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-end">
+    <a class="btn btn-primary" href="{{ url_for('add_question', username=current_user.username, category=category)}}">Dodaj pytanie!</a>
+    </div>
+    <h1 class="text-center">Pytania w kategorii <strong>{{category}}</strong></h1>
+    <hr>
+    {% for question in questions%}
+      <div class="d-flex justify-content-center">
+          <div class="d-flex center">
+              <div class="col-10">
+                  <a href="{{ url_for('edit_question', username=current_user.username, category=category, questionId=question.questionId) }}">
+                      <h3 class="my-caption-text">Pytanie: {{question.questionText}}</h3>
+                        <hr>
+                      <h4 class="text-secondary">Odpowiedź: {{question.answers.answerText}}</h4>
+                  </a>
+              </div>
+              <div class="col-2">
+                  <a class="btn btn-danger" href="{{url_for('delete_question', username=current_user.username, category=category, questionId=question.questionId)}}">
+                      Usuń pytanie
+                  </a>
+              </div>
+          </div>
+          <div></div>
+      </div>
+    {% endfor %}
+</div>
+{% endblock content %}

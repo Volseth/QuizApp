@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/quiz.css') }}">
+<meta id="my-data" data-user="{{username}}" data-category="{{category}}" data-time="{{time}}">
+{% endblock head %}
+
+{% block content %}
+    <!-- start Quiz button -->
+    <div class="start_btn">
+        <button>Rozpocznij quiz</button>
+    </div>
+
+
+    <!-- Info Box -->
+    <div class="info_box">
+        <div class="info-title"><span>Zasady Quizu</span></div>
+        <div class="info-list">
+            <div class="info">1. Czas na odpowiedź na każde pytanie wynosi <span>{{time}} sekund</span> .</div>
+            <div class="info">2. Zaznaczona odpowiedź nie może zostać wycofana.</div>
+            <div class="info">3. Nie możesz wybrać żadnej opcji, jeśli czas na odpowiedź upłynął.</div>
+            <div class="info">4. Nie możesz opuścić quizu jeśli jest aktywny.</div>
+            <div class="info">5. Zdobywasz punkty za każdą poprawną odpowiedź. Jeśli udzielasz kilku poprawnych odpowiedzi z rzędu dostajesz więcej punktów.</div>
+            <div class="info">6. Wyniki będą dostępne w podsumowaniu po rozwiązanym quizie.</div>
+        </div>
+        <div class="buttons">
+            <button class="quit quiz-quiz">Opuść quiz</button>
+            <button class="restart">Kontynuuj</button>
+        </div>
+    </div>
+
+    <!-- Quiz Box -->
+    <div class="quiz_box">
+        <header>
+            <div class="title">Quiz - {{category}}</div>
+            <div class="timer">
+                <div class="time_left_txt">POZOSTALY CZAS</div>
+                <div class="timer_sec">{{time}}</div>
+            </div>
+            <div class="time_line"></div>
+        </header>
+        <section>
+            <div class="que_text">
+                <!--question from JavaScript -->
+            </div>
+            <div class="option_list">
+                <!--options from JavaScript -->
+            </div>
+        </section>
+
+        <!-- footer of Quiz Box -->
+        <footer>
+            <div class="total_que">
+                <!--Question Count Number from JavaScript -->
+            </div>
+            <button class="next_btn">Kolejne pytanie</button>
+        </footer>
+    </div>
+
+    <!-- Result Box -->
+    <div class="result_box">
+        <div class="icon">
+            <i class="fas fa-crown"></i>
+        </div>
+        <div class="complete_text">Gratulacje, zakończyłeś quiz!</div>
+        <hr>
+        <div class="justify-content-center score_text">
+            <!--Score Result from JavaScript -->
+        </div>
+        <div class="buttons">
+            <button class="restart">Powtórz quiz</button>
+            <button class="quit">Wyjdź z quizu</button>
+        </div>
+    </div>
+
+
+    <!-- Quiz questions -->
+    <script>
+        function convertToJson(vars) {
+            return vars
+        }
+        let questions = convertToJson({{questions_json|tojson}})
+        console.log(questions)
+    </script>
+
+    <!-- Quiz in javascript -->
+    <script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+
+{% endblock content %}

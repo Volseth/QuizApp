@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+{% from "includes/formhelpers.html" import render_field %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock head %}
+{% block content %}
+<script>
+    function openedit() {
+        const item = document.getElementsByClassName("form-edit-hidden");
+
+        for(let i = 0; i< item.length; i++){
+            if(item[i].style.visibility === 'hidden') { item[i].style.visibility = 'visible';}
+            else { item[i].style.visibility = 'hidden';}
+        }
+
+    }
+
+</script>
+ <div class="h-100 content-section row">
+   <div class="col-4">
+     <div class="media">
+        <img class="rounded-circle account-img" src="{{ image_file }}">
+        <div class="media-body">
+          <h2 class="account-heading">{{ current_user.name }} <img  class="img-edit" onclick="openedit()"  src="{{url_for('static', filename='images/edit.png') }}"></h2>
+          <p class="text-secondary">{{ current_user.email }}</p>
+            <div class="interests">
+                ZAINTERESOWANIA
+                <div class="col">
+                    {% for interest in current_user.interests %}
+                        &#10003;{{interest.categoryName}}
+                    {% endfor %}
+                </div>
+            </div>
+         </div>
+     </div>
+
+     <div class="media form-edit-hidden">
+         <div class="row">
+             <div class="col-4">
+             <h4>Aktualizacja profilu</h4>
+             <hr>
+         </div>
+         <div class="col-6">
+             <!-- enctype for image uploads -->
+             <form method="POST" action="" enctype="multipart/form-data">
+                 {{render_field(form.name, class="form-control")}}
+                {{render_field(form.email, class="form-control")}}
+                {{render_field(form.picture, class="form-control-file")}}
+                {{render_field(form.submit, class="btn btn-primary",  value="Zaktualizuj Profil")}}
+                {{ form.csrf_token }}
+             </form>
+         </div>
+         </div>
+     </div>
+     <div class="media form-edit-hidden">
+         <div class="row">
+           <div class="col-4">
+            <h4>Zainteresowania</h4>
+            <hr>
+         </div>
+         <div class="col-6">
+                 <form method="POST" action="">
+                 {% for category in all_categories %}
+                 {% if category.categoryName in names %}
+                    <input type="checkbox" class="form-check" id="check_{{category.categoryName}}" name="check_{{category.categoryName}}" value="{{category.categoryName}}" checked>
+                    <label for="check_{{category.categoryName}}">{{category.categoryName}}</label>
+                 {% else %}
+                 <input type="checkbox" class="form-check" id="check_{{category.categoryName}}" name="check_{{category.categoryName}}" value="{{category.categoryName}}">
+                    <label for="check_{{category.categoryName}}">{{category.categoryName}}</label>
+                 {% endif %}
+                 {% endfor %}
+                 <button name="interests_submit" type="submit" class="btn btn-primary">Zaktualizuj zainteresowania</button>
+             </form>
+         </div>
+         </div>
+     </div>
+   </div>
+   <div class="col-8 stats">
+       <div class="row">
+        <div class="col mini-box">
+            <h5 class="stat_tag">Rozwiązane Quizy</h5>
+            <hr>
+            <p>{{quizes}}</p>
+        </div>
+        <div class="col mini-box">
+            <h5 class="stat_tag">Czas poświęcony na naukę</h5>
+            <hr>
+            <p>{{time}}</p>
+        </div>
+        <div class="col mini-box">
+            <h5 class="stat_tag">Liczba zdobytych punktów</h5>
+            <hr>
+            <p>{{score}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mini-box">
+            <h5 class="stat_tag">Prawidłowe odpowiedzi</h5>
+            <hr>
+            <p>{{good}}</p>
+        </div>
+
+        <div class="col mini-box">
+            <h5 class="stat_tag">Błędne odpowiedzi</h5>
+            <hr>
+            <p>{{wrong}}</p>
+        </div>
+
+        <div class="col mini-box">
+            <h5 class="stat_tag">Procent prawidłowych odpowiedzi</h5>
+            <hr>
+            <p>{{precentage}}</p>
+        </div>
+
+      </div>
+   </div>
+ </div>
+
+{% endblock content %}

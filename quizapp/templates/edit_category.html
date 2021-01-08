@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% from "includes/formhelpers.html" import render_field %}
+{% block content %}
+<div class="center">
+    <h4>{{category}}</h4>
+    <hr>
+    <div class="col-6">
+        <!-- enctype for image uploads -->
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{render_field(form.category_name, class="form-control")}}
+            {{render_field(form.parent_category, class="form-control")}}
+            {{render_field(form.picture, class="form-control-file")}}
+            {{render_field(form.submit, class="btn btn-primary",  value="Zaktualizuj kategorie")}}
+            {{ form.csrf_token }}
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

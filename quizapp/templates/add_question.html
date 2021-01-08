@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% from "includes/formhelpers.html" import render_field %}
+
+<div class="center">
+    <h4>Nowe pytanie w kategorii <strong>{{category}}</strong></h4>
+    <hr>
+     <form method="POST">
+         {{render_field(form.question_text, class="form-control")}}
+         {{render_field(form.answer_text, class="form-control")}}
+         {{render_field(form.submit, class="btn btn-primary", value="Dodaj pytanie")}}
+         {{ form.csrf_token }}
+    </form>
+</div>
+{% endblock content %}
