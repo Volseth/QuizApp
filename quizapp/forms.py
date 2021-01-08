@@ -8,7 +8,8 @@ from quizapp.models import User
 
 
 class QuizForm(FlaskForm):
-    time_select = SelectField(label='Czas na odpowiedź w sekundach', coerce=int, validators=[validators.DataRequired("Wybierz czas na odpowiedź")])
+    time_select = SelectField(label='Czas na odpowiedź w sekundach', coerce=int,
+                              validators=[validators.DataRequired("Wybierz czas na odpowiedź")])
 
     category = SelectField(label='Kategoria quizu', validators=[validators.DataRequired("Wybierz kategorię quizu")])
 

@@ -9,7 +9,7 @@
         <form method="POST" action="" enctype="multipart/form-data">
             {{render_field(form.question_text, class="form-control")}}
             {{render_field(form.answer_text, class="form-control")}}
-            {{render_field(form.submit, class="btn btn-primary",  value="Zaktualizuj pytanie")}}
+            {{render_field(form.submit, class="btn btn-primary", value="Zaktualizuj pytanie")}}
             {{ form.csrf_token }}
         </form>
         <a class="btn btn-primary" onclick="goBack()">Powrót</a>

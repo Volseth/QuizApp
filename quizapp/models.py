@@ -49,7 +49,8 @@ class Answer(db.Model):
     __tablename__ = 'answers'
     answerId = db.Column(db.Integer, primary_key=True)
     answerText = db.Column(db.String(100), unique=False)
-    questionId = db.Column(db.Integer, db.ForeignKey('questions.questionId', ondelete="CASCADE"), nullable=False, unique=False)
+    questionId = db.Column(db.Integer, db.ForeignKey('questions.questionId', ondelete="CASCADE"), nullable=False,
+                           unique=False)
 
 
 class Question(db.Model):

@@ -5,63 +5,68 @@
 {% block content %}
 
 <div class="container-fluid">
-  <div class="d-flex justify-content-end">
-  <a class="btn btn-primary" href="{{ url_for('add_category', username=current_user.username)}}">Dodaj Kategorię!</a>
-  </div>
-  <h1 class="text-center">POLECANE DLA CIEBIE</h1>
-  <div class="row">
-    {% for category in recommended %}
-    {% set category_image = 'images/category_pics/' ~ category.image_file %}
-      {% if category.parentCategory is not none %}
-      <div class=" col mini-box">
-        <a href="{{ url_for('edit_category', username=current_user.username, category=category.categoryName) }}">
-          <div class="col">
-              <h3 class="my-caption-text">{{category.categoryName}}&#9997;</h3>
-          </div>
-          <div class="col category-image">
-              <img class=rounded-circle" src="{{url_for('static', filename=category_image) }}" alt="{{category.categoryName}}">
+    <div class="d-flex justify-content-end">
+        <a class="btn btn-primary" href="{{ url_for('add_category', username=current_user.username)}}">Dodaj
+            Kategorię!</a>
+    </div>
+    <h1 class="text-center">POLECANE DLA CIEBIE</h1>
+    <div class="row">
+        {% for category in recommended %}
+        {% set category_image = 'images/category_pics/' ~ category.image_file %}
+        {% if category.parentCategory is not none %}
+        <div class=" col mini-box">
+            <a href="{{ url_for('edit_category', username=current_user.username, category=category.categoryName) }}">
+                <div class="col">
+                    <h3 class="my-caption-text">{{category.categoryName}}&#9997;</h3>
+                </div>
+                <div class="col category-image">
+                    <img class=rounded-circle" src="{{url_for('static', filename=category_image) }}"
+                         alt="{{category.categoryName}}">
+                </div>
+            </a>
         </div>
-        </a>
-      </div>
-      {% else %}
-      <div class=" col mini-box">
-          <div class="col">
-              <h3 class="my-caption-text">{{category.categoryName}}</h3>
-          </div>
-          <div class="col category-image">
-              <img class=rounded-circle" src="{{url_for('static', filename=category_image) }}" alt="{{category.categoryName}}">
+        {% else %}
+        <div class=" col mini-box">
+            <div class="col">
+                <h3 class="my-caption-text">{{category.categoryName}}</h3>
+            </div>
+            <div class="col category-image">
+                <img class="rounded-circle" src="{{url_for('static', filename=category_image) }}"
+                     alt="{{category.categoryName}}">
+            </div>
         </div>
-      </div>
-      {% endif %}
-    {% endfor %}
-  </div>
-  <hr>
-  <h1 class="text-center">WSZYSTKIE KATEGORIE</h1>
-  <div class="row">
-    {% for category in all_categories %}
-    {% set category_image = 'images/category_pics/' ~ category.image_file %}
-      {% if category.parentCategory is not none %}
-      <div class=" col mini-box">
-        <a href="{{ url_for('edit_category', username=current_user.username, category=category.categoryName) }}">
-          <div class="col">
-              <h3 class="my-caption-text">{{category.categoryName}}&#9997;</h3>
-          </div>
-          <div class="col category-image">
-              <img class=rounded-circle" src="{{url_for('static', filename=category_image) }}" alt="{{category.categoryName}}">
+        {% endif %}
+        {% endfor %}
+    </div>
+    <hr>
+    <h1 class="text-center">WSZYSTKIE KATEGORIE</h1>
+    <div class="row">
+        {% for category in all_categories %}
+        {% set category_image = 'images/category_pics/' ~ category.image_file %}
+        {% if category.parentCategory is not none %}
+        <div class=" col mini-box">
+            <a href="{{ url_for('edit_category', username=current_user.username, category=category.categoryName) }}">
+                <div class="col">
+                    <h3 class="my-caption-text">{{category.categoryName}}&#9997;</h3>
+                </div>
+                <div class="col category-image">
+                    <img class=rounded-circle" src="{{url_for('static', filename=category_image) }}"
+                         alt="{{category.categoryName}}">
+                </div>
+            </a>
         </div>
-        </a>
-      </div>
-      {% else %}
-      <div class=" col mini-box">
-          <div class="col">
-              <h3 class="my-caption-text">{{category.categoryName}}</h3>
-          </div>
-          <div class="col category-image">
-              <img class=rounded-circle" src="{{url_for('static', filename=category_image) }}" alt="{{category.categoryName}}">
+        {% else %}
+        <div class=" col mini-box">
+            <div class="col">
+                <h3 class="my-caption-text">{{category.categoryName}}</h3>
+            </div>
+            <div class="col category-image">
+                <img src="{{url_for('static', filename=category_image) }}"
+                     alt="{{category.categoryName}}">
+            </div>
         </div>
-      </div>
-      {% endif %}
-    {% endfor %}
-  </div>
+        {% endif %}
+        {% endfor %}
+    </div>
 </div>
 {% endblock content %}

@@ -6,13 +6,13 @@
 <div class="center">
     <h4>Login</h4>
     <hr>
-     <form method="POST">
-         {{render_field(form.username, class="form-control")}}
-         {{render_field(form.password, class="form-control")}}
-         {{render_field(form.remember, class="form-check")}}
-         {{render_field(form.submit, class="btn btn-primary", value="Login")}}
-    <hr>
-    <a href="/register">Nie masz konta? Zarejestruj się!</a>
+    <form method="POST">
+        {{render_field(form.username, class="form-control")}}
+        {{render_field(form.password, class="form-control")}}
+        {{render_field(form.remember, class="form-check")}}
+        {{render_field(form.submit, class="btn btn-primary", value="Login")}}
+        <hr>
+        <a href="/register">Nie masz konta? Zarejestruj się!</a>
     </form>
 </div>
 {% endblock content %}

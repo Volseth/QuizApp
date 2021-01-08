@@ -207,8 +207,9 @@ def add_category(username):
     formUpdate.parent_category.choices = choices
     if formUpdate.submit.data and formUpdate.validate_on_submit():
         # Category name validation:
-        category_name = Category.query.filter(and_(or_(Category.createdBy.is_(None), Category.createdBy == current_user.id),
-                                                   Category.categoryName == formUpdate.category_name.data)).first()
+        category_name = Category.query.filter(
+            and_(or_(Category.createdBy.is_(None), Category.createdBy == current_user.id),
+                 Category.categoryName == formUpdate.category_name.data)).first()
         if category_name:
             flash('Taka kategoria już istnieje! Wprowadź inna nazwę', 'danger')
             return redirect(
@@ -244,8 +245,9 @@ def edit_category(username, category):
     # Update category info
     if formUpdate.submit.data and formUpdate.validate_on_submit():
         # Category name validation:
-        category_name = Category.query.filter(and_(or_(Category.createdBy.is_(None), Category.createdBy == current_user.id),
-                                                   Category.categoryName == formUpdate.category_name.data)).first()
+        category_name = Category.query.filter(
+            and_(or_(Category.createdBy.is_(None), Category.createdBy == current_user.id),
+                 Category.categoryName == formUpdate.category_name.data)).first()
         # If category exists check name change in form
         if category_name and (
                 formUpdate.category_name.data != category_query.categoryName or formUpdate.parent_category.data != category_query.parentCategory):
@@ -284,7 +286,8 @@ def categories_questions(username):
     # Get all categories created by user or main categories
     all_categories, recommended = getCategories()
 
-    return render_template('categories_questions.html', username=username, user_categories=all_categories, recommended=recommended)
+    return render_template('categories_questions.html', username=username, user_categories=all_categories,
+                           recommended=recommended)
 
 
 # Questions for users in selected category
@@ -292,7 +295,8 @@ def categories_questions(username):
 @login_required
 def questions(username, category):
     # Get all questions for selected category, created by current user
-    category = Category.query.filter(Category.categoryName == category, or_(Category.createdBy == current_user.id, Category.createdBy == None)).first()
+    category = Category.query.filter(Category.categoryName == category,
+                                     or_(Category.createdBy == current_user.id, Category.createdBy == None)).first()
     questions = category.category_questions
     return render_template('questions.html', questions=questions, username=username, category=category)
 
@@ -306,7 +310,8 @@ def add_question(username, category):
     # Form validation
     if form.validate_on_submit():
         # Add question and answer object to database
-        category = Category.query.filter(Category.categoryName == category, Category.createdBy == current_user.id).first()
+        category = Category.query.filter(Category.categoryName == category,
+                                         Category.createdBy == current_user.id).first()
 
         new_question = Question(
             questionText=form.question_text.data,
@@ -377,7 +382,8 @@ def quiz_categories(username):
     form.category.choices = learn_categories
 
     if form.validate_on_submit():
-        return redirect(url_for('learn', username=username, category=form.category.data, time=int(form.time_select.data)))
+        return redirect(
+            url_for('learn', username=username, category=form.category.data, time=int(form.time_select.data)))
 
     return render_template('prepare_quiz.html', username=username, form=form)
 
@@ -424,7 +430,8 @@ def learn(username, category, time):
     # Get statistics from finished quiz
     if request.method == 'POST':
         stats = request.get_json()
-        category = Category.query.filter(Category.categoryName == category, Category.createdBy==current_user.id).first()
+        category = Category.query.filter(Category.categoryName == category,
+                                         Category.createdBy == current_user.id).first()
         user_stats = Statistic(
             categoryId=category.categoryId,
             goodAnswers=stats['good'],
@@ -436,6 +443,7 @@ def learn(username, category, time):
         current_user.statistics.append(user_stats)
         db.session.commit()
     if request.method == 'GET':
-        redirect(url_for('learn', username=username, category=category, questions_json=questions_with_options, time=time))
-    return render_template('learn.html', username=username, category=category, questions_json=questions_with_options, time=time)
-
+        redirect(
+            url_for('learn', username=username, category=category, questions_json=questions_with_options, time=time))
+    return render_template('learn.html', username=username, category=category, questions_json=questions_with_options,
+                           time=time)

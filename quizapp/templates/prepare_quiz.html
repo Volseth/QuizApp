@@ -2,21 +2,21 @@
 {% from "includes/formhelpers.html" import render_field %}
 {% block content %}
 <div class="container-fluid">
-  <div class="center">
-    <h4>Przygotuj Quiz</h4>
-    <div>
-      <p>Wyświetlane są kategorie, w których znajduje się dostateczna ilość pytań aby stworzyć quiz (4).
-        Kolejność wyświetlania kategorii odbywa się na podstawie zainteresowań w profilu użytkownika</p>
-    </div>
-    <hr>
     <div class="center">
-      <form method="POST">
-         {{render_field(form.time_select, class="form-control")}}
-         {{render_field(form.category, class="form-control")}}
-         {{render_field(form.submit, class="btn btn-primary", value="Stwórz Quiz!")}}
-         {{ form.csrf_token }}
-    </form>
+        <h4>Przygotuj Quiz</h4>
+        <div>
+            <p>Wyświetlane są kategorie, w których znajduje się dostateczna ilość pytań aby stworzyć quiz (4).
+                Kolejność wyświetlania kategorii odbywa się na podstawie zainteresowań w profilu użytkownika</p>
+        </div>
+        <hr>
+        <div class="center">
+            <form method="POST">
+                {{render_field(form.time_select, class="form-control")}}
+                {{render_field(form.category, class="form-control")}}
+                {{render_field(form.submit, class="btn btn-primary", value="Stwórz Quiz!")}}
+                {{ form.csrf_token }}
+            </form>
+        </div>
     </div>
-  </div>
 </div>
 {% endblock content %}
