@@ -14,6 +14,6 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
-login_manager.login_message ='Proszę się zalogować aby uzyskać dostęp do tej strony.'
+login_manager.login_message = 'Proszę się zalogować aby uzyskać dostęp do tej strony.'
 
 from quizapp import routes

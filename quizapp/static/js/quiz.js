@@ -166,7 +166,7 @@ function optionSelected(answer){
     let correcAns = questions[questionCount].answer; //getting correct answer from array
     const allOptions = option_list.children.length; //getting all option items
     
-    if(userAns == correcAns){ //if user selected option is equal to array's correct answer
+    if(userAns === correcAns){ //if user selected option is equal to array's correct answer
         combo += 1;
         good += 1;
         if(combo >= maxCombo){
@@ -186,7 +186,7 @@ function optionSelected(answer){
         answer.insertAdjacentHTML("beforeend", crossIconTag); //adding cross icon to correct selected option
 
         for(i=0; i < allOptions; i++){
-            if(option_list.children[i].textContent == correcAns){ //if there is an option which is matched to an array answer 
+            if(option_list.children[i].textContent === correcAns){ //if there is an option which is matched to an array answer
                 option_list.children[i].setAttribute("class", "option correct"); //adding green color to matched option
                 option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to matched option
             }
@@ -203,14 +203,12 @@ function showResult(){
     quiz_box.classList.remove("activeQuiz"); //hide quiz box
     result_box.classList.add("activeResult"); //show result box
     const scoreText = result_box.querySelector(".score_text");
-    let scoreTag =
-        '' +
-        '<span>Gratulacje! Zdobyłeś <p>'+ totalScore +'</p>punktów</span>'+
-        '<span>Dobre odpowiedzi: <p>'+ good +'</p></span>'+
-        '<span>Złe odpowiedzi: <p>'+ wrong +'</p></span>'+
-        '<span>Dobre odpowiedzi z rzędu: <p>'+ maxCombo +'</p></span>'+
-        '<span>Czas: <p>'+ totalTime +' sekund</p></span>';
-    scoreText.innerHTML = scoreTag;  //adding new span tag inside score_Text
+    scoreText.innerHTML = '' +
+        '<span>Gratulacje! Zdobyłeś <p>' + totalScore + '</p>punktów</span>' +
+        '<span>Dobre odpowiedzi: <p>' + good + '</p></span>' +
+        '<span>Złe odpowiedzi: <p>' + wrong + '</p></span>' +
+        '<span>Dobre odpowiedzi z rzędu: <p>' + maxCombo + '</p></span>' +
+        '<span>Czas: <p>' + totalTime + ' sekund</p></span>';  //adding new span tag inside score_Text
 }
 
 function startTimer(time){
@@ -229,7 +227,7 @@ function startTimer(time){
             const allOptions = option_list.children.length; //getting all option items
             let correcAns = questions[questionCount].answer; //getting correct answer from array
             for(i=0; i < allOptions; i++){
-                if(option_list.children[i].textContent == correcAns){ //if there is an option which is matched to an array answer
+                if(option_list.children[i].textContent === correcAns){ //if there is an option which is matched to an array answer
                     option_list.children[i].setAttribute("class", "option correct"); //adding green color to matched option
                     option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to matched option
                 }
@@ -255,6 +253,5 @@ function startTimerLine(time){
 
 function queCounter(index){
     //creating a new span tag and passing the question number and total question
-    let totalQueCounTag = '<span><p>'+ index +'</p> z <p>'+ questions.length +'</p> Pytań</span>';
-    bottom_ques_counter.innerHTML = totalQueCounTag;  //adding new span tag inside bottom_ques_counter
+    bottom_ques_counter.innerHTML = '<span><p>' + index + '</p> z <p>' + questions.length + '</p> Pytań</span>';  //adding new span tag inside bottom_ques_counter
 }

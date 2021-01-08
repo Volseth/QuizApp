@@ -108,7 +108,7 @@ def getStats():
     if total_answers == 0:
         total_answers = 1
     return quizes_solved, total_score, \
-        total_good, str(round(total_good / total_answers, 2) * 100) + "%", \
+        total_good, str(round((total_good / total_answers) * 100, 2)) + "%", \
         datetime.timedelta(seconds=total_time), total_wrong
 
 
