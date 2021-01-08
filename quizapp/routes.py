@@ -311,7 +311,7 @@ def add_question(username, category):
     if form.validate_on_submit():
         # Add question and answer object to database
         category = Category.query.filter(Category.categoryName == category,
-                                         Category.createdBy == current_user.id).first()
+                                         or_(Category.createdBy == current_user.id, Category.createdBy == None)).first()
 
         new_question = Question(
             questionText=form.question_text.data,
@@ -367,6 +367,7 @@ def quiz_categories(username):
     form = QuizForm()
     count_query = (db.session.query(Category)
                    .join(Question)
+                   .filter(Question.createdBy == current_user.id)
                    .group_by(Category)
                    .having(func.count(Category.categoryName) > 4)
                    ).all()
@@ -393,8 +394,12 @@ def quiz_categories(username):
 @login_required
 def learn(username, category, time):
     # Get all questions and answers for selected category, created by current user
+    selected_category = Category.query.filter(Category.categoryName == category,
+                                     or_(Category.createdBy == current_user.id, Category.createdBy == None)).first()
+
     questions = Question.query.filter(
-        and_(Category.categoryName == category, User.username == username)).all()
+        and_(Question.categoryId == selected_category.categoryId, Question.createdBy == current_user.id)).all()
+
     answers = []
     # Make questions randomly shuffled
     random.shuffle(questions)
