@@ -91,7 +91,7 @@ def save_picture(form_picture, path):
     return picture_filename
 
 
-def getStats():
+def get_stats():
     stats = Statistic.query.filter(Statistic.createdBy == current_user.id).all()
     quizes_solved = 0
     total_score = 0
@@ -128,7 +128,7 @@ def profile(username):
         form_update.email.data = current_user.email
 
     # Get statistics
-    quizes, score, good, percentage, time, wrong = getStats()
+    quizes, score, good, percentage, time, wrong = get_stats()
 
     # Update user profile
     if form_update.submit.data and form_update.validate_on_submit():
@@ -168,7 +168,7 @@ def profile(username):
 
 
 # get categories for user
-def getCategories():
+def get_categories():
     # Get all categories created by user or main categories
     all_categories = Category.query.filter(
         or_(Category.createdBy.is_(None), Category.createdBy == current_user.id)).order_by(
@@ -194,7 +194,7 @@ def getCategories():
 @app.route('/<username>/categories')
 @login_required
 def categories(username):
-    all_categories, recommended = getCategories()
+    all_categories, recommended = get_categories()
     return render_template('categories.html', recommended=recommended, all_categories=all_categories, username=username)
 
 
@@ -285,7 +285,7 @@ def edit_category(username, category):
 @login_required
 def categories_questions(username):
     # Get all categories created by user or main categories
-    all_categories, recommended = getCategories()
+    all_categories, recommended = get_categories()
 
     return render_template('categories_questions.html', username=username, user_categories=all_categories,
                            recommended=recommended)
@@ -373,7 +373,7 @@ def quiz_categories(username):
                    .group_by(Category)
                    .having(func.count(Category.categoryName) > 4)
                    ).all()
-    all_categories, recommended = getCategories()
+    all_categories, recommended = get_categories()
     form.time_select.choices = [i for i in range(15, 125, 5)]
     learn_categories = []
     for category in recommended:
