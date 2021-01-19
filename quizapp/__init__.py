@@ -7,6 +7,7 @@ app.config['SECRET_KEY'] = 'a93e1c2f91f19391818afa5c'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/quiz.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+DEFAULT_ADMINISTRATOR = 'admin'
 # Database Connection and object of SQLAlchemy
 db = SQLAlchemy(app)
 

@@ -215,9 +215,13 @@ def add_category(username):
             return redirect(
                 url_for('add_category', username=username, form=form_update))
         else:
+            if form_update.picture.data:
+                file = save_picture(form_update.picture.data, 'static/images/category_pics')
+            else:
+                file = 'default.png'
             new_category = Category(
                 categoryName=form_update.category_name.data,
-                image_file=save_picture(form_update.picture.data, 'static/images/category_pics'),
+                image_file=file,
                 parentCategory=form_update.parent_category.data,
                 createdBy=current_user.id
             )
@@ -299,7 +303,7 @@ def questions(username, category):
     category = Category.query.filter(Category.categoryName == category,
                                      or_(Category.createdBy == current_user.id, Category.createdBy == None)).first()
     category_questions = Question.query.filter(Question.categoryId == category.categoryId,
-                                               Question.createdBy == current_user.id).all()
+                                               Question.createdBy == current_user.id).order_by(Question.questionText).all()
     return render_template('questions.html', questions=category_questions, username=username, category=category)
 
 
